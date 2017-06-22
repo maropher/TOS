@@ -1,0 +1,164 @@
+<html>
+<head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<title>420 watch</title>
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "400px";
+    document.getElementById("main").style.marginLeft = "400px";
+    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.body.style.backgroundColor = "white";
+}
+</script>
+<style>
+body {
+     font-family:'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+   
+    transition: background-color .5s;
+}
+
+.button {
+        background-color: #000000;
+        color: #FFFFFF;
+        padding: 10px;
+        border-radius: 10px;
+        -moz-border-radius: 10px;
+        -webkit-border-radius: 10px;
+        margin:10px
+    }
+.link{
+	color:gray;
+	text-decoration: none;
+	background-color: none;
+}
+.sidenav {
+    height: 100%;
+    width:0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    
+}
+
+footer {
+      position: fixed;
+      left:0px;
+      bottom:0px;
+      height:50px;
+      width:100%;
+      background-color: lightgrey;
+      color: white;
+      padding: 15px;
+    }
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+
+
+
+  <div id="mySidenav" class="sidenav">
+   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    
+      {% if 'username' in session %}
+      <a href="#"><span class="glyphicon glyphicon-user"></span> {{ session['username'] }} </a>
+      {% if session['username'] == 'admin@420watch.com' %}
+      <a href="/addwatch"><span class="glyphicon glyphicon-plus"></span> Add Watch </a>
+      {% else %}
+      <a href="/mycart"><span class="glyphicon glyphicon-th-list"></span> My Cart </a>
+      {% endif %}
+      <a href="/logout"><span class="glyphicon glyphicon-remove"></span> Logout </a> 
+      {% else %}
+      <a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a>
+      <a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+    {% endif %}
+  </div>
+
+
+<div id="main">
+<div style="padding:20px;background-color: lightgrey;">
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+<a href="/"><span style="font-size:30px;cursor:pointer" class="link">4 2 0 WATCH</span></a>
+</div>
+
+
+<div class="container">
+<h1> My Cart </h1>
+{% for row in rows %}
+<div class="row" style="padding: 30px;">
+<div class="col-md-5">
+<img src="{{row["imageUrl"]}}" width=250 height=250>
+</div>
+<div class="col-md-7">
+<h1>{{ row["name"] }}<br></h1>
+<p>
+{{ row["description"] }}<br>
+</p>
+<h4>
+Rp. {{ row["price"] }}
+<br>
+</h4>
+{% if 'username' in session %}
+{% if session['username'] != 'admin@420watch.com' %}
+<form method="post" action="{{ url_for('deletebookings') }}">
+<input type="hidden" value="{{ row["watchId"] }}" name="watch_id">
+<button type="submit" class="btn btn-basic">Delete From Cart</button><br>
+</form>
+<a href="/"><button type="submit" class="btn btn-default">Back</button></a>
+{% endif %}
+{% endif %}
+</div>
+</div>
+{% endfor %}
+</div>
+<div style="height: 150px; width:100%;">
+</div>
+
+<footer class="container-fluid text-center">
+  <p style="color:black;"> 2017-2018 | 4 2 0 WATCH </p>
+</footer>
+</div>
+
+
+</body>
+</html>
